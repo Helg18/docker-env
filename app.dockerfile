@@ -5,4 +5,13 @@ RUN apt-get update && apt-get install --no-install-recommends -y vim unzip git l
     && docker-php-ext-install mcrypt pdo pgsql pdo_pgsql mbstring xml curl soap zip
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set user deployer
+RUN useradd -g 33 -m deployer && echo "deployer:deployer" | chpasswd && adduser deployer sudo
+RUN usermod -aG www-data deployer
+RUN echo "deployer ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 RUN chown www-data:www-data /var/www -R
+RUN chown deployer:www-data /usr/bin/composer
+USER deployer
+WORKDIR /home/deployer
+

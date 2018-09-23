@@ -5,9 +5,9 @@ services:
     build:
       context: ./
       dockerfile: app.dockerfile
-    working_dir: /var/www
+    working_dir: /home/deployer
     volumes:
-        - ./:/var/www
+        - ./:/home/deployer
     networks:
       dev_network:
         ipv4_address: 172.28.1.2
@@ -46,8 +46,8 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: sweedy
-      POSTGRES_USER: sweedy
+      POSTGRES_DB: developer
+      POSTGRES_USER: developer
       POSTGRES_PASSWORD: secret
     networks:
       dev_network:
