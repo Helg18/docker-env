@@ -8,10 +8,19 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set user deployer
 RUN useradd -g 33 -m deployer && echo "deployer:deployer" | chpasswd && adduser deployer sudo
+
+RUN set -x \
+    && adduser -u 1000 deployer www-data
+
+RUN apt-get install -y libpq-dev \
+    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+    && docker-php-ext-install pdo pdo_pgsql pgsql
+
+
 RUN usermod -aG www-data deployer
 RUN echo "deployer ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-RUN chown www-data:www-data /var/www -R
-RUN chown deployer:www-data /usr/bin/composer
+
 USER deployer
+
 WORKDIR /home/deployer
 

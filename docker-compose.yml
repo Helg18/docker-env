@@ -46,8 +46,8 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: developer
-      POSTGRES_USER: developer
+      POSTGRES_DB: sweedy
+      POSTGRES_USER: sweedy
       POSTGRES_PASSWORD: secret
     networks:
       dev_network:
